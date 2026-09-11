@@ -2,7 +2,7 @@
 
 API REST desarrollada con **Node.js** y **Express.js** como parte del proyecto Sprint 16.
 
-## 📋 Descripción
+## Descripción
 
 Este proyecto consiste en la implementación de un servidor web utilizando **Express.js**, con el objetivo de desarrollar y comprender los fundamentos de una API REST.
 
@@ -17,7 +17,7 @@ El proyecto también incorpora herramientas para facilitar el desarrollo y mante
 
 ---
 
-## 🚀 Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - **Node.js**
 - **Express.js**
@@ -29,7 +29,7 @@ El proyecto también incorpora herramientas para facilitar el desarrollo y mante
 
 ---
 
-## 📁 Estructura del proyecto
+## Estructura del proyecto
 
 ```text
 web_project_around_express/
