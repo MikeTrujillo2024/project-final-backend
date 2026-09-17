@@ -9,12 +9,30 @@ Este proyecto consiste en la implementación de un servidor web utilizando **Exp
 Actualmente, la aplicación cuenta con dos recursos principales:
 
 - **Users**: gestión y consulta de usuarios.
-    en los recursos user te permite consultar especifica por id de usurios
-    ![id de usurios](https://i.postimg.cc/wvHnMxMp/404Notfound.jpg)
+    -- es indispensable que la pagina nos informa de todos usuaros que tenemos cuando solicitemos 
+    ![all users](https://i.postimg.cc/vBMCT8TT/get-Users.jpg)
+
+    -- en los recursos user te permite consultar especifica por id de usurios
+    ![id de usurios](https://i.postimg.cc/26mgyjy8/get-Users-By-Id.jpg)
     
 - **Cards**: gestión y consulta de tarjetas.
+    -- por el momento solo podmos consultar las tarjetas en JSON
+    ![cards](https://i.postimg.cc/26mgyjy8/get-Users-By-Id.jpg)
 
 Durante esta etapa del proyecto, los datos se obtienen desde archivos **JSON**, simulando una fuente de datos. En etapas posteriores, estos datos serán reemplazados por una **base de datos real**.
+
+En todo momento el proyecto esta al pendiente de los errores que puese pasar durante la navegación
+
+ -- ERROR 404 para los recursos no encontrados es importante que demos a conocer al usuario que no hay datos
+ ![error recursos](https://i.postimg.cc/wvHnMxMp/404Notfound.jpg)
+
+ --ERROR USUARIO NO ENCONTRADO cuando ingresamos un id de usuario incorrecto nos muestra error de id de usuario
+ ![error idUSer](https://i.postimg.cc/vBMCT8TB/id-Noencontrado.jpg)
+
+ --ERROR 500 cuando por algun motivo el hay un error en el servidor o programacion tendremos este error
+ ![error servidor](https://i.postimg.cc/pLbw4BvP/error500.jpg)
+
+
 
 El proyecto también incorpora herramientas para facilitar el desarrollo y mantener la calidad del código, como **Nodemon** y **ESLint**.
 
