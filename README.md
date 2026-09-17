@@ -10,7 +10,8 @@ Actualmente, la aplicación cuenta con dos recursos principales:
 
 - **Users**: gestión y consulta de usuarios.
     en los recursos user te permite consultar especifica por id de usurios
-    ![id de usurios](https://drive.google.com/file/d/1NNWk_0_EE8p0ljS4z5MDIqd5KhnIuOTb/view?usp=sharing)
+    ![id de usurios](https://i.postimg.cc/wvHnMxMp/404Notfound.jpg)
+    
 - **Cards**: gestión y consulta de tarjetas.
 
 Durante esta etapa del proyecto, los datos se obtienen desde archivos **JSON**, simulando una fuente de datos. En etapas posteriores, estos datos serán reemplazados por una **base de datos real**.
