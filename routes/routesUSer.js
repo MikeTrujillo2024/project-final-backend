@@ -12,8 +12,8 @@ routerUser.get('/', (req, res) => {
     .then((data) => {
       const user = JSON.parse(data);
       res.json(user);
-    }).catch((error) => {
-      res.status(500).send({ message: error.message });
+    }).catch(() => {
+      res.status(500).send({ message: 'Ha ocurrido un error en el servidor' });
     });
 });
 
@@ -35,13 +35,13 @@ routerUser.get('/:id', (req, res) => {
 
       // si el id no se encuentra
       if (!userId) {
-        res.status(404).send({ message: `el usuario con id ${id} no encontrado ` });
+        return res.status(404).send({ message: 'ID de usuario no encontrado' });
       }
 
       return res.send(userId);
     })
-    .catch((error) => {
-      res.status(500).send({ message: error.message });
+    .catch(() => {
+      res.status(500).send({ message: 'Ha ocurrido un error en el servidor' });
     });
 });
 

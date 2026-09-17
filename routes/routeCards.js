@@ -12,8 +12,8 @@ routeCards.get('/', (req, res) => {
     .then((data) => {
       const cards = JSON.parse(data);
       res.json(cards);
-    }).catch((error) => {
-      res.status(500).send({ message: error.message });
+    }).catch(() => {
+      res.status(500).send({ message: 'Ha ocurrido un error en el servidor' });
     });
 });
 
