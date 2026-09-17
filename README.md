@@ -9,27 +9,27 @@ Este proyecto consiste en la implementación de un servidor web utilizando **Exp
 Actualmente, la aplicación cuenta con dos recursos principales:
 
 - **Users**: gestión y consulta de usuarios.
-    -- es indispensable que la pagina nos informa de todos usuaros que tenemos cuando solicitemos 
+    -- es indispensable que la página nos informe de todos los usuaros que tenemos
     ![all users](https://i.postimg.cc/vBMCT8TT/get-Users.jpg)
 
-    -- en los recursos user te permite consultar especifica por id de usurios
+    -- en los recursos user te permite consultar por id de usurios
     ![id de usurios](https://i.postimg.cc/26mgyjy8/get-Users-By-Id.jpg)
     
 - **Cards**: gestión y consulta de tarjetas.
-    -- por el momento solo podmos consultar las tarjetas en JSON
+    -- por el momento solo podemos consultar las tarjetas en formato JSON
     ![cards](https://i.postimg.cc/26mgyjy8/get-Users-By-Id.jpg)
 
 Durante esta etapa del proyecto, los datos se obtienen desde archivos **JSON**, simulando una fuente de datos. En etapas posteriores, estos datos serán reemplazados por una **base de datos real**.
 
 En todo momento el proyecto esta al pendiente de los errores que puese pasar durante la navegación
 
- -- ERROR 404 para los recursos no encontrados es importante que demos a conocer al usuario que no hay datos
+ -- ERROR 404 para los recursos no encontrados es importante que demos a conocer al usuario
  ![error recursos](https://i.postimg.cc/wvHnMxMp/404Notfound.jpg)
 
- --ERROR USUARIO NO ENCONTRADO cuando ingresamos un id de usuario incorrecto nos muestra error de id de usuario
+ --ERROR USUARIO NO ENCONTRADO cuando ingresamos un id de usuario incorrecto nos muestra error
  ![error idUSer](https://i.postimg.cc/vBMCT8TB/id-Noencontrado.jpg)
 
- --ERROR 500 cuando por algun motivo el hay un error en el servidor o programacion tendremos este error
+ --ERROR 500 cuando por algun motivo el hay un error en programacion tendremos este error
  ![error servidor](https://i.postimg.cc/pLbw4BvP/error500.jpg)
 
 
