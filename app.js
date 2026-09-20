@@ -1,11 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
 /* const path = require('path'); */
 const routerUser = require('./routes/routesUSer');
 const routerCard = require('./routes/routeCards');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-/* app.use(express.static(path.join(__dirname),)) */
+
+// conectamos con el servidor de mongo
+mongoose.connect('mongodb://localhost:27017/aroundb');
 // link a los usuarios
 app.use('/users', routerUser);
 app.use('/cards', routerCard);
