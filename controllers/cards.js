@@ -10,7 +10,7 @@ module.exports.getCards = (req, res) => {
   card.find({})
     .then((cards) => res.json({ data: cards }))
     .catch(() => {
-      res.status(500).json({ message: 'Error de servidor' });
+      res.status(500).json({ message: 'error predeterminado' });
     });
 };
 
@@ -24,7 +24,7 @@ module.exports.createCard = (req, res) => {
   card.create({ name, link, owner: req.user._id })
     .then((cards) => res.send({ data: cards }))
     .catch(() => {
-      res.status(500).json({ message: 'Error de servidor' })
+      res.status(500).json({ message: 'error predeterminado' })
     })
 };
 
@@ -36,13 +36,13 @@ module.exports.deleteCard = (req, res) => {
   card.findByIdAndDelete(req.params.cardId)
     .then((deletedCard) => {
       if (!deletedCard) {
-        res.status(404).json({ message: 'error card no encontrada' });
+        res.status(404).json({ message: 'error Tarjeta no encontrada' });
         return;
       }
 res.json({ data: deletedCard});
 
     })
     .catch(() => {
-      res.status(500).json({ message: 'Error de servidor'})
+      res.status(500).json({ message: 'error predeterminado'})
     })
 };

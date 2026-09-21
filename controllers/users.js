@@ -8,7 +8,7 @@ module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.json({ data: users }))
     .catch(() => {
-      res.status(500).json({ message: 'Error de servidor' });
+      res.status(500).json({ message: 'error predeterminado' });
     });
 };
 
@@ -22,7 +22,7 @@ module.exports.getUserById = (req, res) => {
       res.json({ data: user });
     })
     .catch(() => {
-      res.status(500).json({ message: 'Error de servidor' });
+      res.status(500).json({ message: 'error predeterminado' });
     });
 };
 
@@ -31,5 +31,5 @@ module.exports.createUser = (req, res) => {
 
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'erro de insercion' }));
+    .catch(() => res.status(500).send({ message: 'error predeterminado' }));
 };

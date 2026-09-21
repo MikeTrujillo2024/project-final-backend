@@ -13,7 +13,7 @@ routeCards.get('/', (req, res) => {
       const cards = JSON.parse(data);
       res.json(cards);
     }).catch(() => {
-      res.status(500).send({ message: 'Ha ocurrido un error en el servidor' });
+      res.status(500).send({ message: 'error predeterminado' });
     });
 });
 
