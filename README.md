@@ -55,16 +55,31 @@ El proyecto también incorpora herramientas para facilitar el desarrollo y mante
 ```text
 web_project_around_express/
 │
-├── data/
-│   ├── users.json
-|   |
-│   └── cards.json
+├── controllers/
+│   ├── cards.js
+│   └── users.js
+│
+├── models/
+│   ├── card.js
+│   └── user.js
 │
 ├── routes/
-│   ├── routesUSer.js
-│   └── routesCard.js
+│   ├── routeCards.js
+│   └── routesUSer.js
+│
+├── utils/
+│   └── ...
 │
 ├── app.js
 ├── package.json
 ├── package-lock.json
 └── README.md
+```
+
+## controllers/
+controllers/
+├── cards.js    → crear, obtener, eliminar, like, dislike
+└── users.js    → obtener, crear y actualizar usuarios
+
+
+
