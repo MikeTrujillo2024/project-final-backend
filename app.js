@@ -10,6 +10,16 @@ const app = express();
 app.use(express.json());
 // conectamos con el servidor de mongo
 mongoose.connect('mongodb://localhost:27017/aroundb');
+
+// middleware para user id
+app.use((req, res, next) => {
+  req.user = {
+    _id: '6ab0283b44a226e879d87ee5' // pega el _id del usuario de prueba que creamos en el paso anterior
+  };
+
+  next();
+});
+
 // link a los usuarios
 app.use('/users', routerUser);
 app.use('/cards', routerCard);
