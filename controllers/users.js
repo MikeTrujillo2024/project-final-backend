@@ -42,3 +42,40 @@ module.exports.createUser = (req, res) => {
       return res.status(500).send({ message: 'error predeterminado.' });
     });
 };
+
+module.exports.patchUser = (req, res) => {
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+    .orFail()
+    .then((user) => {
+      res.send({ data: user });
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({ message: 'datos invalidos' });
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(404).send({ message: 'Usuario no encontrada' });
+      }
+      return res.status(500).json({ message: 'Error predeterminado' });
+    });
+};
+
+module.exports.patchAvatar = (req, res) => {
+  const { avatar } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+    .orFail()
+    .then((user) => {
+      res.send({ data: user });
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({ message: 'datos invalidos' });
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(404).send({ message: 'Usuario no encontrada' });
+      }
+      return res.status(500).json({ message: 'Error predeterminado' });
+    });
+};

@@ -22,6 +22,7 @@ app.use((req, res, next) => {
 
 // link a los usuarios
 app.use('/users', routerUser);
+// link a las cards
 app.use('/cards', routerCard);
 
 // middleware
