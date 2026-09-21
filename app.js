@@ -7,6 +7,7 @@ const routerCard = require('./routes/routeCards');
 const { PORT = 3000 } = process.env;
 const app = express();
 
+app.use(express.json());
 // conectamos con el servidor de mongo
 mongoose.connect('mongodb://localhost:27017/aroundb');
 // link a los usuarios
@@ -16,7 +17,7 @@ app.use('/cards', routerCard);
 // middleware
 app.use((req, res) => {
   res.status(404).json({
-    message: 'Recurso solicitado no encontrado',
+    message: 'Recurso solicitado no encontrado mike',
   });
 });
 app.listen(PORT, () => {
