@@ -14,15 +14,18 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
+    .orFail()
     .then((user) => {
-      if (!user) {
-        res.status(404).json({ message: 'Usuario no encontrado' });
-        return;
-      }
       res.json({ data: user });
     })
-    .catch(() => {
-      res.status(500).json({ message: 'error predeterminado' });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(400).send({ message: 'datos invalidos' });
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(404).send({ message: 'Usuario no encontrado' });
+      }
+      return res.status(500).json({ message: 'error predeterminado' });
     });
 };
 
@@ -30,6 +33,12 @@ module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
+    .orFail()
     .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'error predeterminado' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({ message: ' datos invalidos' });
+      }
+      return res.status(500).send({ message: 'error predeterminado.' });
+    });
 };

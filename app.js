@@ -14,7 +14,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 // middleware para user id
 app.use((req, res, next) => {
   req.user = {
-    _id: '6ab0283b44a226e879d87ee5' // pega el _id del usuario de prueba que creamos en el paso anterior
+    _id: '6ab0283b44a226e879d87ee5', // pega el _id del usuario de prueba que creamos en el paso anterior
   };
 
   next();
