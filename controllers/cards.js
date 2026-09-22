@@ -23,7 +23,15 @@ module.exports.createCard = (req, res) => {
 
   card.create({ name, link, owner: req.user._id })
     .then((cards) => res.send({ data: cards }))
-    .catch(() => res.status(500).send({ message: 'error predeterminado.' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(400).send({ message: 'datos invalidos' });
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(404).send({ message: 'Tarjeta no encontrada' });
+      }
+      return res.status(500).send({ message: 'error predeterminado.' });
+    });
 };
 
 /* metodo delete

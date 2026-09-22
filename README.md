@@ -75,11 +75,13 @@ web_project_around_express/
 ├── package-lock.json
 └── README.md
 ```
-
 ## controllers/
+```text
 controllers/
 ├── cards.js    → crear, obtener, eliminar, like, dislike
 └── users.js    → obtener, crear y actualizar usuarios
+
+```
 
 
 
