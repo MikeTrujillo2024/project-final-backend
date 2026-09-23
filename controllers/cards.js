@@ -24,11 +24,8 @@ module.exports.createCard = (req, res) => {
   card.create({ name, link, owner: req.user._id })
     .then((cards) => res.send({ data: cards }))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         return res.status(400).send({ message: 'datos invalidos' });
-      }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(404).send({ message: 'Tarjeta no encontrada' });
       }
       return res.status(500).send({ message: 'error predeterminado.' });
     });
@@ -67,7 +64,7 @@ module.exports.likeCard = (req, res) => {
       res.send({ data: likeCard });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         return res.status(400).send({ message: 'datos invalidos' });
       }
       if (err.name === 'DocumentNotFoundError') {
