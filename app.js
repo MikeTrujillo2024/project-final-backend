@@ -28,7 +28,7 @@ app.use('/cards', routerCard);
 // middleware
 app.use((req, res) => {
   res.status(404).json({
-    message: 'Recurso solicitado no encontrado mike',
+    message: 'Recurso solicitado no encontrado',
   });
 });
 app.listen(PORT, () => {
