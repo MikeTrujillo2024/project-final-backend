@@ -1,28 +1,23 @@
 /* routes */
 const router = require('express').Router();
 
+// auth
+const auth = require('../middleware/auth');
+// middlewareValidator
+const validate = require('../middleware/validate');
+// esquemas de validators
+const userSchema = require('../validators/user');
+const loginSchema = require('../validators/login');
+
 // llamamos al controlador
 const {
-  getUsers,
-  getUserById,
   createUser,
-  patchUser,
-  patchAvatar,
+  login,
+  getCurrentUser,
 } = require('../controllers/users');
 
-// Get
-router.get('/', getUsers);
-
-// Post
-router.post('/', createUser);
-
-// PATCH usuario
-router.patch('/me', patchUser);
-
-// PATCH avatar
-router.patch('/me/avatar', patchAvatar);
-
-// Get by id
-router.get('/:userId', getUserById);
+router.post('/signup', validate(userSchema), createUser);
+router.post('/signin', validate(loginSchema), login);
+router.get('/me', auth, getCurrentUser);
 
 module.exports = router;

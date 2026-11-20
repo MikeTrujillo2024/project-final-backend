@@ -1,80 +1,80 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 // importamos el model de user
 const User = require('../models/user');
 
-/* metodo GET
-obtenenmos todos los usurarios
-*/
-module.exports.getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.json({ data: users }))
-    .catch(() => {
-      res.status(500).json({ message: 'error predeterminado' });
+// create user
+module.exports.createUser = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+    // obtenemos el hash del password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
     });
+
+    return res.status(201).json({
+      data: {
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
-module.exports.getUserById = (req, res) => {
-  User.findById(req.params.userId)
-    .orFail()
-    .then((user) => {
-      res.json({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(400).send({ message: 'datos invalidos' });
-      }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(404).send({ message: 'Usuario no encontrado' });
-      }
-      return res.status(500).json({ message: 'error predeterminado' });
+// login
+module.exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'Correo o contraseña incorrectos',
+      });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+      return res.status(401).json({
+        message: 'Correo o contraseña incorrecto',
+      });
+    }
+
+    const payload = { _id: user._id };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    return res.status(200).json({
+      token,
     });
+  } catch (error) {
+    return next(error);
+  }
 };
 
-module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+module.exports.getCurrentUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
 
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: ' datos invalidos' });
-      }
-      return res.status(500).send({ message: 'error predeterminado.' });
+    if (!user) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado',
+      });
+    }
+
+    return res.status(200).json({
+      data: {
+        name: user.name,
+        email: user.email,
+      },
     });
-};
-
-module.exports.patchUser = (req, res) => {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .orFail()
-    .then((user) => {
-      res.send({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: 'datos invalidos' });
-      }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(404).send({ message: 'Usuario no encontrada' });
-      }
-      return res.status(500).json({ message: 'Error predeterminado' });
-    });
-};
-
-module.exports.patchAvatar = (req, res) => {
-  const { avatar } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
-    .orFail()
-    .then((user) => {
-      res.send({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: 'datos invalidos' });
-      }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(404).send({ message: 'Usuario no encontrada' });
-      }
-      return res.status(500).json({ message: 'Error predeterminado' });
-    });
+  } catch (error) {
+    return next(error);
+  }
 };
