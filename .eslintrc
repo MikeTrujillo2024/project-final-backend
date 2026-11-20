@@ -3,8 +3,12 @@
   "rules": {
     "no-underscore-dangle": "off",
     "no-console": "off",
-    "eol-last": "off"
+    "eol-last": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
   }
-
-
 }

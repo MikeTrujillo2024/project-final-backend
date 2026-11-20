@@ -8,20 +8,22 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  about: {
+  email: {
     type: String,
-    minlength: 2,
-    maxlength: 30,
-    required: true,
-  },
-  avatar: {
-    type: String,
-    required: true,
     validate: {
       validator(value) {
-        return /^https?:\/\/(www\.)?[a-zA-Z0-9.-]+\/?[a-zA-Z0-9._~:/?%#[\]@!$&'()*+,;=-]*$/.test(value);
+        return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value);
       },
+      message: 'El correo electrónico no tiene un formato válido',
     },
+    unique: true,
+    required: true,
+  },
+
+  password: {
+    type: String,
+    required: true,
+    select: false,
   },
 
 });

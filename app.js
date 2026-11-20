@@ -1,36 +1,58 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+
+const expressWinston = require('express-winston');
+const winston = require('winston');
+const logger = require('./utils/logger');
+
 /* const path = require('path'); */
-const routerUser = require('./routes/routesUSer');
-const routerCard = require('./routes/routeCards');
+const routerUser = require('./routes/routesUser');
+const routerArticle = require('./routes/routeArticle');
+const errorHandler = require('./middleware/errorHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
+// leer los cuerpos de json
 app.use(express.json());
+// registra solicitudes entrantes
+app.use(expressWinston.logger({
+  winstonInstance: logger,
+  level: 'http',
+  format: winston.format.json(),
+  requestWhitelist: ['method', 'url', 'httpVersion', 'originalUrl'],
+}));
 // conectamos con el servidor de mongo
-mongoose.connect('mongodb://localhost:27017/aroundb');
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('Conexión exitosa a MongoDB');
 
-// middleware para user id
-app.use((req, res, next) => {
-  req.user = {
-    _id: '6ab0283b44a226e879d87ee5', // pega el _id del usuario de prueba que creamos en el paso anterior
-  };
+    // libk a users
+    app.use('/users', routerUser);
+    // link a las cards
+    app.use('/articles', routerArticle);
 
-  next();
-});
+    app.use(expressWinston.errorLogger({
+      winstonInstance: logger,
+      format: winston.format.json(),
+      requestWhitelist: ['method', 'url', 'httpVersion', 'originalUrl'],
+    }));
 
-// link a los usuarios
-app.use('/users', routerUser);
-// link a las cards
-app.use('/cards', routerCard);
+    // middleware para centralizar los errores
+    app.use(errorHandler);
 
-// middleware
-app.use((req, res) => {
-  res.status(404).json({
-    message: 'Recurso solicitado no encontrado',
+    // middleware
+    app.use((req, res) => {
+      res.status(404).json({
+        message: 'Recurso solicitado no encontrado',
+      });
+    });
+
+    app.listen(PORT, () => {
+      console.log(`Servidor escuchando en puerto ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error al conectar con MongoDB:', error);
   });
-});
-app.listen(PORT, () => {
-  console.log('enlace al servidor');
-});
