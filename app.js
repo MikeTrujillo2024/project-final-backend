@@ -6,6 +6,9 @@ const expressWinston = require('express-winston');
 const winston = require('winston');
 const logger = require('./utils/logger');
 
+// cors
+const cors = require('cors');
+
 /* const path = require('path'); */
 const routerUser = require('./routes/routesUser');
 const routerArticle = require('./routes/routeArticle');
@@ -16,6 +19,10 @@ const app = express();
 
 // leer los cuerpos de json
 app.use(express.json());
+
+app.use(cors({
+  origin:  'http://localhost:5173',
+}))
 // registra solicitudes entrantes
 app.use(expressWinston.logger({
   winstonInstance: logger,
