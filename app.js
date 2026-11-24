@@ -10,7 +10,7 @@ const logger = require('./utils/logger');
 const cors = require('cors');
 
 /* const path = require('path'); */
-const routerUser = require('./routes/routesUser');
+const routerUser = require('./routes/routeUser');
 const routerArticle = require('./routes/routeArticle');
 const errorHandler = require('./middleware/errorHandler');
 
