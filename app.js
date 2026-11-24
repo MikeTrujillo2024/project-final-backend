@@ -4,10 +4,9 @@ const mongoose = require('mongoose');
 
 const expressWinston = require('express-winston');
 const winston = require('winston');
-const logger = require('./utils/logger');
-
 // cors
 const cors = require('cors');
+const logger = require('./utils/logger');
 
 /* const path = require('path'); */
 const routerUser = require('./routes/routeUser');
@@ -21,8 +20,8 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin:  'http://localhost:5173',
-}))
+  origin: 'http://localhost:5173',
+}));
 // registra solicitudes entrantes
 app.use(expressWinston.logger({
   winstonInstance: logger,
