@@ -11,6 +11,7 @@ const logger = require('./utils/logger');
 /* const path = require('path'); */
 const routerUser = require('./routes/routeUser');
 const routerArticle = require('./routes/routeArticle');
+const routerNews = require('./routes/routeNews');
 const errorHandler = require('./middleware/errorHandler');
 
 const { PORT = 3000 } = process.env;
@@ -38,6 +39,8 @@ mongoose.connect(process.env.MONGODB_URI)
     app.use('/users', routerUser);
     // link a las cards
     app.use('/articles', routerArticle);
+    //link a las noticias
+    app.use('/news', routerNews);
 
     app.use(expressWinston.errorLogger({
       winstonInstance: logger,
