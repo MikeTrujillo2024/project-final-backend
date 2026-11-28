@@ -13,6 +13,9 @@
   "license": "ISC",
   "author": "Miguel Angel Fernandez Trujillo",
   "type": "commonjs",
+  "engines": {
+    "node": "24.x"
+  },
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

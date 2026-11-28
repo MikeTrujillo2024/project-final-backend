@@ -20,8 +20,13 @@ const app = express();
 // leer los cuerpos de json
 app.use(express.json());
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: allowedOrigins,
 }));
 // registra solicitudes entrantes
 app.use(expressWinston.logger({
