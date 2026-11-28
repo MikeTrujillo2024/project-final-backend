@@ -1,10 +1,13 @@
-# NewsExplorer — Backend
+# NewsExplorer - Backend
 
-Backend de **NewsExplorer**, una aplicación web Full Stack que permite a los usuarios buscar noticias, guardar sus artículos favoritos y administrar sus artículos guardados.
+Backend de la aplicación **NewsExplorer**, desarrollado con Node.js y Express. Proporciona una API REST para gestionar usuarios, autenticar sesiones, guardar artículos y consultar noticias mediante NewsAPI.
 
-La API proporciona funcionalidades de registro de usuarios, autenticación y gestión de artículos utilizando Node.js, Express y MongoDB.
+## 🌐 Aplicación desplegada
 
-## Tecnologías utilizadas
+- **Frontend:** https://newsexplorer2026.mooo.com
+- **API:** https://api-newsexplorer2026.mooo.com
+
+## 🛠️ Tecnologías utilizadas
 
 - Node.js
 - Express.js
@@ -14,16 +17,18 @@ La API proporciona funcionalidades de registro de usuarios, autenticación y ges
 - bcryptjs
 - Joi
 - Winston
+- express-winston
 - CORS
+- NewsAPI
 
-## Estructura del proyecto
+## 📂 Estructura del proyecto
 
 ```text
-backend/
+project-final-backend/
 ├── controllers/
 │   ├── articles.js
-│   └── users.js
-├── logs/
+│   ├── users.js
+│   └── news.js
 ├── middleware/
 │   ├── auth.js
 │   ├── errorHandler.js
@@ -33,152 +38,182 @@ backend/
 │   └── user.js
 ├── routes/
 │   ├── routeArticle.js
-│   └── routeUser.js
+│   ├── routeUser.js
+│   └── routeNews.js
 ├── utils/
+│   ├── constants.js
 │   └── logger.js
 ├── validators/
-│   ├── article.js
-│   ├── articleId.js
-│   ├── login.js
-│   └── user.js
+├── .env
 ├── .gitignore
 ├── app.js
-├── package.json
-└── README.md
+└── package.json
 ```
 
-## Instalación
+## ⚙️ Instalación y configuración
 
-1. Clonar el repositorio:
+### Requisitos
+
+- Node.js
+- npm
+- MongoDB Atlas o una instancia de MongoDB
+- Una API Key de NewsAPI
+
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/MikeTrujillo2024/project-final-backend.git
 ```
 
-2. Acceder al directorio del proyecto:
+### 2. Entrar al directorio
 
 ```bash
 cd project-final-backend
 ```
 
-3. Instalar las dependencias:
+### 3. Instalar dependencias
 
 ```bash
 npm install
 ```
 
-4. Crear un archivo `.env` en la raíz del proyecto y configurar las siguientes variables de entorno:
+### 4. Configurar variables de entorno
+
+Crear un archivo `.env` en la raíz del proyecto:
 
 ```env
+NODE_ENV=development
 PORT=3000
-MONGODB_URI=tu_cadena_de_conexion_a_mongodb
-JWT_SECRET=tu_clave_secreta
+MONGODB_URI=mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+NEWS_API_KEY=your_newsapi_key
+FRONTEND_URL=http://localhost:5173
 ```
 
-Sustituir los valores de ejemplo por la configuración correspondiente. No compartir ni subir el archivo `.env` al repositorio.
+**Importante:** Las variables de entorno contienen información sensible. No se debe subir el archivo `.env` a GitHub.
 
-## Ejecución del proyecto
+En producción, `FRONTEND_URL` debe contener el dominio HTTPS del frontend:
 
-Iniciar el servidor en modo desarrollo:
+```env
+FRONTEND_URL=https://newsexplorer2026.mooo.com
+```
+
+La clave `NEWS_API_KEY` se utiliza exclusivamente en el backend para realizar solicitudes a NewsAPI.
+
+### 5. Ejecutar el servidor
+
+Modo desarrollo:
 
 ```bash
 npm run dev
 ```
 
-Iniciar el servidor:
+Modo producción:
 
 ```bash
 npm start
 ```
 
-La aplicación utiliza el puerto `3000` de forma predeterminada si no se especifica otro valor en la variable `PORT`.
+El servidor utiliza el puerto `3000` de manera predeterminada.
 
-## Rutas de la API
+## 🔗 Endpoints de la API
 
-### Usuarios y autenticación
+### Usuarios
 
-| Método | Endpoint | Descripción | Autenticación |
-|---|---|---|---|
-| POST | `/users/signup` | Registrar un nuevo usuario | No |
-| POST | `/users/signin` | Iniciar sesión y obtener un JWT | No |
-| GET | `/users/me` | Obtener los datos del usuario autenticado | Sí |
+| Método | Endpoint | Descripción |
+|---|---|---|
+| POST | `/users/signup` | Registrar un usuario |
+| POST | `/users/signin` | Iniciar sesión |
+| GET | `/users/me` | Obtener información del usuario autenticado |
+
+Las rutas de registro e inicio de sesión utilizan validaciones Joi.
+
+La ruta `/users/me` requiere autenticación mediante JWT.
 
 ### Artículos guardados
 
-| Método | Endpoint | Descripción | Autenticación |
-|---|---|---|---|
-| GET | `/articles` | Obtener los artículos guardados por el usuario autenticado | Sí |
-| POST | `/articles` | Guardar un nuevo artículo | Sí |
-| DELETE | `/articles/:articleId` | Eliminar un artículo guardado | Sí |
+| Método | Endpoint | Descripción |
+|---|---|---|
+| GET | `/articles` | Obtener los artículos guardados por el usuario |
+| POST | `/articles` | Guardar un artículo |
+| DELETE | `/articles/:articleId` | Eliminar un artículo |
 
-## Autenticación
+Todas las rutas de artículos requieren autenticación.
 
-La API utiliza JSON Web Tokens (JWT) para proteger las rutas privadas.
+Cada artículo se asocia con el usuario que lo guarda. El backend verifica que el usuario autenticado sea el propietario antes de permitir su eliminación.
 
-Después de iniciar sesión correctamente, el servidor devuelve un token con una vigencia de 7 días.
+Al crear un artículo, se reciben los siguientes campos:
 
-Para acceder a las rutas protegidas, se debe enviar el token mediante el encabezado `Authorization`:
+- `keyword`
+- `title`
+- `text`
+- `date`
+- `source`
+- `link`
+- `image`
+
+### Noticias
+
+| Método | Endpoint | Descripción |
+|---|---|---|
+| GET | `/news?q=palabra_clave` | Buscar noticias |
+
+La búsqueda requiere el parámetro `q`.
+
+Ejemplo:
 
 ```http
-Authorization: Bearer TU_JWT_TOKEN
+GET /news?q=tecnología
 ```
 
-El middleware de autenticación verifica el token e identifica al usuario que realiza la solicitud.
+El backend consulta NewsAPI mediante su endpoint `/v2/everything`.
 
-## Modelos de datos
+Características de la búsqueda:
 
-### Usuario (User)
+- Consulta noticias de los últimos 7 días.
+- Solicita hasta 100 artículos por consulta.
+- Utiliza la variable `NEWS_API_KEY` para autenticar la solicitud.
+- Devuelve los resultados dentro de la propiedad `articles`.
 
-| Campo | Tipo | Descripción |
-|---|---|---|
-| `name` | String | Nombre del usuario (entre 2 y 30 caracteres) |
-| `email` | String | Correo electrónico único |
-| `password` | String | Contraseña cifrada mediante bcryptjs |
+Respuestas principales:
 
-Las contraseñas se procesan mediante bcryptjs antes de almacenarse en la base de datos.
+- `200`: búsqueda exitosa.
+- `400`: no se proporcionó una palabra clave válida.
+- `502`: error al obtener noticias del proveedor externo.
 
-### Artículo (Article)
+## 🔐 Autenticación y seguridad
 
-| Campo | Tipo | Descripción |
-|---|---|---|
-| `title` | String | Título del artículo |
-| `keyword` | String | Palabra clave de búsqueda |
-| `text` | String | Texto o descripción del artículo |
-| `date` | String | Fecha de publicación |
-| `source` | String | Fuente de la noticia |
-| `link` | String | Dirección URL del artículo |
-| `image` | String | Dirección URL de la imagen |
-| `owner` | ObjectId | Referencia al usuario propietario del artículo |
+La aplicación utiliza JSON Web Tokens (JWT) para autenticar a los usuarios.
 
-Cada artículo guardado está relacionado con el usuario que lo guardó. Los usuarios solamente pueden consultar y eliminar sus propios artículos.
+- Las rutas protegidas requieren un token válido.
+- Las contraseñas se gestionan mediante bcryptjs.
+- Los datos recibidos se validan mediante Joi.
+- Los artículos guardados pertenecen a un usuario específico.
+- CORS permite solicitudes desde el frontend local y el dominio configurado mediante `FRONTEND_URL`.
+- Las claves y credenciales se almacenan en variables de entorno.
 
-## Validaciones y manejo de errores
+## 📰 Integración con NewsAPI
 
-Los datos recibidos por la API se validan mediante esquemas Joi y validaciones de los modelos de Mongoose.
+El backend realiza las solicitudes a NewsAPI para evitar exponer la clave de acceso en el frontend.
 
-La API cuenta con un middleware centralizado para manejar los errores más comunes:
+La configuración de búsqueda se encuentra en `utils/constants.js`:
 
-| Código HTTP | Descripción |
-|---|---|
-| 400 | Datos de solicitud o identificador inválidos |
-| 401 | Falta el token, es inválido o ha expirado; también puede indicar credenciales incorrectas |
-| 403 | El usuario no tiene permisos para eliminar el artículo |
-| 404 | Usuario o artículo no encontrado |
-| 409 | El correo electrónico ya está registrado |
-| 500 | Error interno del servidor |
+```js
+API_URL_NEWS = 'https://newsapi.org/v2/everything';
+DAYS_RANGE_NEWS = 7;
+PAGE_SIZE_NEWS = 100;
+```
 
-## Registro de actividad (Logs)
-
-La aplicación utiliza Winston y express-winston para registrar las solicitudes HTTP entrantes y los errores del servidor.
-
-## Scripts disponibles
+## 📝 Scripts disponibles
 
 | Comando | Descripción |
 |---|---|
-| `npm run dev` | Iniciar el servidor con Nodemon |
-| `npm start` | Iniciar el servidor |
-| `npm run lint` | Ejecutar ESLint |
+| `npm start` | Inicia el servidor |
+| `npm run dev` | Inicia el servidor en modo desarrollo |
+| `npm run lint` | Ejecuta ESLint |
 
-## Autor
+## 👨‍💻 Autor
 
-Miguel Angel Fernandez Trujillo
+**Mike Trujillo**
+
+Proyecto desarrollado como parte del programa de Desarrollo Web de TripleTen.
